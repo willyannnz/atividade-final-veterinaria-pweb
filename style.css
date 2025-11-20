@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+.banner-titulo {
+    font-family: "exo 2";
+    font-weight: 700;
+    font-style: normal;
+    font-size: 2rem;
+}
+
+/* Define a fonte Poppins como o padrão para a aplicação */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Aplica um peso maior e garante a Poppins no nome principal da clínica */
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; /* Define a espessura da fonte como negrito */
+    font-size: 1.5rem; /* Opcional: Aumenta um pouco o tamanho */
+}
+
+/* Se você tiver outros títulos (h1, h2) que queira destacar: */
+h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; /* Um peso semi-bold é bom para títulos */
+}
