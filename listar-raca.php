@@ -34,8 +34,8 @@
                 print "<td>".$row->nome_raca."</td>";     
                 print "<td>".$row->especie_raca."</td>";     
                 print "<td>
-                        <button class='btn btn-success' onclick=\"location.href='?page=editar-raca&id_raca={$row->id_raca}';\">Editar</button>
-                        <button class='btn btn-danger' onclick=\"if(confirm('Tem certeza que deseja excluir?')){location.href='?page=salvar-raca&acao=excluir&id_raca={$row->id_raca}';}\">Excluir</button>
+                        <button class='btn btn-success btn-sm' onclick=\"location.href='?page=editar-raca&id_raca={$row->id_raca}';\">Editar</button>
+                        <button class='btn btn-danger btn-sm' onclick=\"if(confirm('Tem certeza que deseja excluir?')){location.href='?page=salvar-raca&acao=excluir&id_raca={$row->id_raca}';}\">Excluir</button>
                     </td>";
                 print "</tr>";
             }

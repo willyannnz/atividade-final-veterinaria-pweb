@@ -1,46 +1,42 @@
 <?php
-    
     include("config.php"); 
- 
-    $id_raca = $_REQUEST['id_raca'];
-
     
-    $sql = "SELECT id_raca, nome_raca, especie_raca FROM raca WHERE id_raca=".$id_raca;
-    $res = $conn->query($sql);
-    
-    
-    if ($res === FALSE || $res->num_rows == 0) {
-        print "<p class='alert alert-danger'>Erro ao buscar Raça ou Raça não encontrada.</p>";
-        print "<script>location.href='?page=listar-raca';</script>";
+    // 1. Preparar e Executar a consulta principal (Raça) de forma segura
+    if (!isset($_REQUEST["id_raca"])) {
+        print "<p class='alert alert-danger'>ID da raça não fornecido para edição.</p>";
         return;
     }
     
+    $stmt = $conn->prepare("SELECT * FROM raca WHERE id_raca = ?");
+    $stmt->bind_param("i", $_REQUEST["id_raca"]);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    if ($res->num_rows == 0) {
+        print "<p class='alert alert-danger'>Raça não encontrada.</p>";
+        return;
+    }
 
     $row = $res->fetch_object();
+    $stmt->close();
 ?>
-
-<div class="container mt-5">
-    <h1>Editar Raça: <?php print $row->nome_raca; ?></h1>
-    
+<div class="container mt-4">
+    <h1>Editar Raça</h1>
     <form action="?page=salvar-raca" method="POST">
         <input type="hidden" name="acao" value="editar">
-        <input type="hidden" name="id_raca" value="<?php print $row->id_raca;?>">
-        
+        <input type="hidden" name="id_raca" value="<?php print $row->id_raca; ?>">
+
         <div class="mb-3">
-            <label for="nome" class="form-label">Nome da Raça</label>
-            <input type="text" name="nome_raca" id="nome" class="form-control" 
-                   value="<?php print $row->nome_raca;?>" required>
+            <label>Nome da Raça</label>
+            <input type="text" name="nome_raca" value="<?php print $row->nome_raca; ?>" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Espécie</label>
+            <input type="text" name="especie_raca" value="<?php print $row->especie_raca; ?>" class="form-control">
         </div>
         
         <div class="mb-3">
-            <label for="especie" class="form-label">Espécie (Ex: Cão, Gato)</label>
-            <input type="text" name="especie_raca" id="especie" class="form-control" 
-                   value="<?php print $row->especie_raca;?>" required>
-        </div>
-        
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-            <button onclick="location.href='?page=listar-raca';" class="btn btn-secondary">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar Edição</button>
         </div>
     </form>
 </div>

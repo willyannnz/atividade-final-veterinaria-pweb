@@ -5,6 +5,23 @@
 
     switch ($_REQUEST['acao']) {
         case 'cadastrar':
+            // Recebe os dados do formulário para cadastro
+            $nome     = $_POST["nome_proprietario"];
+            $email    = $_POST["email"];
+            $telefone = $_POST["telefone"];
+
+            // SQL para inserção na tabela proprietario
+            $sql = "INSERT INTO proprietario (nome_proprietario, telefone, email) 
+                    VALUES ('{$nome}', '{$telefone}', '{$email}')";
+            
+            $res = $conn->query($sql);
+
+            if ($res == true) {
+                print "<script>alert('Proprietário cadastrado com sucesso!');</script>";
+            } else {
+                print "<script>alert('Não foi possível cadastrar o Proprietário. Detalhe: " . $conn->error . "');</script>";
+            }
+            print "<script>location.href='{$redirecionar}';</script>";
             break;
 
         case 'editar':
@@ -49,3 +66,4 @@
             print "<script>location.href='{$redirecionar}';</script>";
             break;
     }
+?>

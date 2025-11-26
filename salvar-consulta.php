@@ -5,65 +5,73 @@
 
     switch ($_REQUEST['acao']) {
         case 'cadastrar':
-            // Recebe os dados
-            $data_hora       = $_POST["data_hora"]; // Campo DATETIME-LOCAL
-            $valor           = $_POST["valor_consulta"];
-            $animal_id       = $_POST["animal_id_animal"];
-            $veterinario_id  = $_POST["veterinario_id_veterinario"];
-            // O diagnóstico pode ser inserido vazio no cadastro
-            $diagnostico     = $conn->real_escape_string($_POST["diagnostico"]); 
-
-            $sql = "INSERT INTO consulta (data_hora, valor_consulta, animal_id_animal, veterinario_id_veterinario, diagnostico) 
-                    VALUES ('{$data_hora}', {$valor}, {$animal_id}, {$veterinario_id}, '{$diagnostico}')";
+            // 1. Prepara a consulta SQL com placeholders '?'
+            // Tipo de dados: data_hora (s), valor_consulta (d de double/decimal), animal_id (i), veterinario_id (i), diagnostico (s)
+            $stmt = $conn->prepare("INSERT INTO consulta (data_hora, valor_consulta, animal_id_animal, veterinario_id_veterinario, diagnostico) VALUES (?, ?, ?, ?, ?)");
             
-            $res = $conn->query($sql);
+            // 2. Vincula os parâmetros (sdiis)
+            $stmt->bind_param("sdiis", 
+                $_POST["data_hora"], 
+                $_POST["valor_consulta"], 
+                $_POST["animal_id_animal"], 
+                $_POST["veterinario_id_veterinario"],
+                $_POST["diagnostico"]
+            );
+            
+            // 3. Executa
+            $res = $stmt->execute();
 
             if ($res == true) {
                 print "<script>alert('Consulta agendada com sucesso!');</script>";
             } else {
-                print "<script>alert('Não foi possível agendar a Consulta. Erro: {$conn->error}');</script>";
+                print "<script>alert('Não foi possível agendar a Consulta. Erro: {$stmt->error}');</script>";
             }
+            $stmt->close();
             print "<script>location.href='{$redirecionar}';</script>";
             break;
 
         case 'editar':
-            // Recebe os dados
-            $id              = $_POST["id_consulta"];
-            $data_hora       = $_POST["data_hora"];
-            $valor           = $_POST["valor_consulta"];
-            $animal_id       = $_POST["animal_id_animal"];
-            $veterinario_id  = $_POST["veterinario_id_veterinario"];
-            $diagnostico     = $conn->real_escape_string($_POST["diagnostico"]); 
-
-            $sql = "UPDATE consulta SET 
-                        data_hora = '{$data_hora}', 
-                        valor_consulta = {$valor}, 
-                        animal_id_animal = {$animal_id},
-                        veterinario_id_veterinario = {$veterinario_id},
-                        diagnostico = '{$diagnostico}'
-                    WHERE 
-                        id_consulta = {$id}";
+            // 1. Prepara a consulta SQL com placeholders '?'
+            $stmt = $conn->prepare("UPDATE consulta SET data_hora = ?, valor_consulta = ?, animal_id_animal = ?, veterinario_id_veterinario = ?, diagnostico = ? WHERE id_consulta = ?");
             
-            $res = $conn->query($sql);
+            // 2. Vincula os parâmetros (sdiisi: 1 string, 1 double/decimal, 2 integers, 1 string, 1 integer para o ID)
+            $stmt->bind_param("sdiisi", 
+                $_POST["data_hora"], 
+                $_POST["valor_consulta"], 
+                $_POST["animal_id_animal"],
+                $_POST["veterinario_id_veterinario"],
+                $_POST["diagnostico"],
+                $_POST["id_consulta"]
+            );
+            
+            // 3. Executa
+            $res = $stmt->execute();
 
             if ($res == true) {
                 print "<script>alert('Consulta atualizada com sucesso!');</script>";
             } else {
-                print "<script>alert('Não foi possível atualizar a Consulta. Erro: {$conn->error}');</script>";
+                print "<script>alert('Não foi possível atualizar a Consulta. Erro: {$stmt->error}');</script>";
             }
+            $stmt->close();
             print "<script>location.href='{$redirecionar}';</script>";
             break;
         
         case 'excluir':
-            $id = $_REQUEST["id_consulta"];
-            $sql = "DELETE FROM consulta WHERE id_consulta = {$id}";
-            $res = $conn->query($sql);
+            // 1. Prepara a consulta SQL com placeholders '?'
+            $stmt = $conn->prepare("DELETE FROM consulta WHERE id_consulta = ?");
+            
+            // 2. Vincula o parâmetro (i: integer)
+            $stmt->bind_param("i", $_REQUEST["id_consulta"]);
+
+            // 3. Executa
+            $res = $stmt->execute();
 
             if ($res == true) {
                 print "<script>alert('Consulta excluída com sucesso!');</script>";
             } else {
-                print "<script>alert('Não foi possível excluir a Consulta.');</script>"; 
+                print "<script>alert('Não foi possível excluir a Consulta. Erro: {$stmt->error}');</script>"; 
             }
+            $stmt->close();
             print "<script>location.href='{$redirecionar}';</script>";
             break;
     }

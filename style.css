@@ -1,5 +1,12 @@
 @charset "utf-8";
 
+/* Definição de variáveis CSS para fácil ajuste de cores no futuro */
+:root {
+    --vt-primary: #007bff; /* Cor primária do Bootstrap */
+    --vt-page-bg: #e9ecef; /* Fundo cinza claro para a página */
+    --vt-shadow: rgba(0, 0, 0, 0.08); /* Cor para sombras discretas */
+}
+
 .banner-titulo {
     font-family: "exo 2";
     font-weight: 700;
@@ -7,20 +14,61 @@
     font-size: 2rem;
 }
 
-/* Define a fonte Poppins como o padrão para a aplicação */
+/* 1. Fundo Sutil e Fonte Padrão */
 body {
     font-family: 'Poppins', sans-serif;
+    background-color: var(--vt-page-bg); 
 }
 
 /* Aplica um peso maior e garante a Poppins no nome principal da clínica */
 .navbar-brand {
     font-family: 'Poppins', sans-serif;
-    font-weight: 700; /* Define a espessura da fonte como negrito */
-    font-size: 1.5rem; /* Opcional: Aumenta um pouco o tamanho */
+    font-weight: 700;
+    font-size: 1.5rem;
 }
 
-/* Se você tiver outros títulos (h1, h2) que queira destacar: */
+/* Títulos com cor de texto mais escura e peso semi-bold */
 h1, h2 {
     font-family: 'Poppins', sans-serif;
-    font-weight: 600; /* Um peso semi-bold é bom para títulos */
+    font-weight: 600;
+    color: #343a40; 
+}
+
+/* Estilo para o texto do carrossel ser legível sobre as imagens */
+.carousel-caption h5, .carousel-caption p {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 2. Sombra Suave para Elementos de Conteúdo (Destaque) */
+/* Aplica sombra e bordas arredondadas para destacar formulários e dashboards */
+.card, .jumbotron, form {
+    box-shadow: 0 4px 10px var(--vt-shadow);
+    border-radius: 0.5rem;
+    background-color: white; 
+    padding: 1rem; /* Padding interno para separar conteúdo da borda */
+}
+
+/* A tabela de listagem também ganha bordas arredondadas e sombra sutil */
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden; /* Garante que a borda do cabeçalho siga o round */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Remove o padding padrão do jumbotron que já está sendo adicionado no PHP */
+.jumbotron {
+    padding: 2rem !important;
+    margin-bottom: 2rem;
+}
+
+/* 3. Transição em Botões para melhor Experiência do Usuário (UX) */
+.btn {
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+}
+
+/* Efeito ao passar o mouse em botões */
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

@@ -38,8 +38,8 @@
                 print "<td>".$row->email."</td>";     
                 print "<td>".$row->telefone."</td>";
                 print "<td>
-                        <button class='btn btn-success' onclick=\"location.href='?page=editar-proprietario&id_proprietario={$row->id_proprietario}';\">Editar</button>
-                        <button class='btn btn-danger' onclick=\"if(confirm('Tem certeza que deseja excluir?')){location.href='?page=salvar-proprietario&acao=excluir&id_proprietario={$row->id_proprietario}';}\">Excluir</button>
+                        <button class='btn btn-success btn-sm' onclick=\"location.href='?page=editar-proprietario&id_proprietario={$row->id_proprietario}';\">Editar</button>
+                        <button class='btn btn-danger btn-sm' onclick=\"if(confirm('Tem certeza que deseja excluir?')){location.href='?page=salvar-proprietario&acao=excluir&id_proprietario={$row->id_proprietario}';}\">Excluir</button>
                     </td>";
                 print "</tr>";
             }

@@ -34,8 +34,8 @@
                 print "<td>".$row->crmv."</td>";     
                 print "<td>".$row->telefone."</td>";
                 print "<td>
-                        <button class='btn btn-success' onclick=\"location.href='?page=editar-veterinario&id_veterinario={$row->id_veterinario}';\">Editar</button>
-                        <button class='btn btn-danger' onclick=\"if(confirm('Tem certeza que deseja excluir?')){location.href='?page=salvar-veterinario&acao=excluir&id_veterinario={$row->id_veterinario}';}\">Excluir</button>
+                        <button class='btn btn-success btn-sm' onclick=\"location.href='?page=editar-veterinario&id_veterinario={$row->id_veterinario}';\">Editar</button>
+                        <button class='btn btn-danger btn-sm' onclick=\"if(confirm('Tem certeza que deseja excluir?')){location.href='?page=salvar-veterinario&acao=excluir&id_veterinario={$row->id_veterinario}';}\">Excluir</button>
                     </td>";
                 print "</tr>";
             }

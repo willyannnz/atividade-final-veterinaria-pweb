@@ -1,64 +1,75 @@
 <?php
     include('config.php'); 
     
-
     $redirecionar = "?page=listar-veterinario"; 
 
     switch ($_REQUEST['acao']) {
         case 'cadastrar':
-            $nome     = $_POST["nome_veterinario"];
-            $crmv     = $_POST["crmv"];
-            $telefone = $_POST["telefone"];
-
-            $sql = "INSERT INTO veterinario (nome_veterinario, crmv, telefone) 
-                    VALUES ('{$nome}', '{$crmv}', '{$telefone}')";
+            // 1. Prepara a consulta SQL com placeholders '?'
+            $stmt = $conn->prepare("INSERT INTO veterinario (nome_veterinario, crmv, telefone) VALUES (?, ?, ?)");
             
-            $res = $conn->query($sql);
+            // 2. Vincula os parâmetros (sss: 3 strings)
+            $stmt->bind_param("sss", 
+                $_POST["nome_veterinario"], 
+                $_POST["crmv"], 
+                $_POST["telefone"]
+            );
+            
+            // 3. Executa
+            $res = $stmt->execute();
 
             if ($res == true) {
                 print "<script>alert('Veterinário cadastrado com sucesso!');</script>";
             } else {
-                // Erro comum: CRMV duplicado, pois é um campo UNIQUE
+                // Erro comum: CRMV duplicado (UNIQUE KEY)
                 print "<script>alert('Não foi possível cadastrar. Verifique se o CRMV já existe.');</script>";
             }
+            $stmt->close();
             print "<script>location.href='{$redirecionar}';</script>";
             break;
 
         case 'editar':
-            $id       = $_POST["id_veterinario"];
-            $nome     = $_POST["nome_veterinario"];
-            $crmv     = $_POST["crmv"];
-            $telefone = $_POST["telefone"];
-
-            $sql = "UPDATE veterinario SET 
-                        nome_veterinario = '{$nome}', 
-                        crmv = '{$crmv}', 
-                        telefone = '{$telefone}'
-                    WHERE 
-                        id_veterinario = {$id}";
+            // 1. Prepara a consulta SQL com placeholders '?'
+            $stmt = $conn->prepare("UPDATE veterinario SET nome_veterinario = ?, crmv = ?, telefone = ? WHERE id_veterinario = ?");
             
-            $res = $conn->query($sql);
+            // 2. Vincula os parâmetros (sssi: 3 strings, 1 integer)
+            $stmt->bind_param("sssi", 
+                $_POST["nome_veterinario"], 
+                $_POST["crmv"], 
+                $_POST["telefone"],
+                $_POST["id_veterinario"]
+            );
+            
+            // 3. Executa
+            $res = $stmt->execute();
 
             if ($res == true) {
                 print "<script>alert('Veterinário atualizado com sucesso!');</script>";
             } else {
                 print "<script>alert('Não foi possível atualizar. Verifique se o CRMV já existe.');</script>";
             }
+            $stmt->close();
             print "<script>location.href='{$redirecionar}';</script>";
             break;
         
         case 'excluir':
-            $id = $_REQUEST["id_veterinario"];
-            $sql = "DELETE FROM veterinario WHERE id_veterinario = {$id}";
-            $res = $conn->query($sql);
+            // 1. Prepara a consulta SQL com placeholders '?'
+            $stmt = $conn->prepare("DELETE FROM veterinario WHERE id_veterinario = ?");
+            
+            // 2. Vincula o parâmetro (i: integer)
+            $stmt->bind_param("i", $_REQUEST["id_veterinario"]);
+            
+            // 3. Executa
+            $res = $stmt->execute();
 
             if ($res == true) {
                 print "<script>alert('Veterinário excluído com sucesso!');</script>";
             } else {
-                // Mensagem customizada (o veterinário pode ter consultas associadas)
+                // Mensagem customizada para erro de chave estrangeira
                 print "<script>alert('Não foi possível excluir. Verifique se existem consultas associadas a este veterinário.');</script>"; 
             }
+            $stmt->close();
             print "<script>location.href='{$redirecionar}';</script>";
             break;
     }
-?>  
+?>
