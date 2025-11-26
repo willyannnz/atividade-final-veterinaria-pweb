@@ -1,9 +1,10 @@
+<?php
+    // --- CORREÇÃO: INCLUIR A CONEXÃO ---
+    include("config.php"); 
+?>
 <div class="container mt-4">
     <h1>Listar Animais</h1>
     <?php
-        // A query usa dois INNER JOINs:
-        // 1. Para buscar o nome do proprietário (tabela p)
-        // 2. Para buscar o nome da raça e espécie (tabela r)
         $sql = "SELECT 
                     a.id_animal, 
                     a.nome_animal, 
@@ -23,6 +24,12 @@
                     a.raca_id_raca = r.id_raca";
 
         $res = $conn->query($sql);
+        
+        if ($res === FALSE) {
+             print "<p class='alert alert-danger'>ERRO: Falha ao executar a consulta em Animais. Verifique se as tabelas Raca e Proprietario existem. Detalhe: " . $conn->error . "</p>";
+             return; 
+        }
+
         $qtd = $res->num_rows;
 
         if($qtd > 0){
@@ -38,7 +45,6 @@
             print "</tr>";
             
             while($row = $res->fetch_object()){
-                // Formata a data para dd/mm/yyyy
                 $data_formatada = ($row->dt_nasc_animal) ? date('d/m/Y', strtotime($row->dt_nasc_animal)) : "N/A";
 
                 print "<tr>";

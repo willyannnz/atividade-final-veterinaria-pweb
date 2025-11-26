@@ -1,8 +1,7 @@
 <?php
-    // Incluir o arquivo de configuração
     include('config.php'); 
     
-    // O destino padrão após a operação
+
     $redirecionar = "?page=listar-veterinario"; 
 
     switch ($_REQUEST['acao']) {

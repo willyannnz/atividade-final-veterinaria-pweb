@@ -1,9 +1,18 @@
+<?php
+    // --- CORREÇÃO: INCLUIR A CONEXÃO ---
+    include("config.php"); 
+?>
 <div class="container mt-4">
     <h1>Listar Veterinários</h1>
     <?php
         $sql = "SELECT * FROM veterinario";
 
         $res = $conn->query($sql);
+
+        if ($res === FALSE) {
+             print "<p class='alert alert-danger'>ERRO: Falha ao executar a consulta em Veterinários. Detalhe: " . $conn->error . "</p>";
+             return; 
+        }
 
         $qtd = $res->num_rows;
 

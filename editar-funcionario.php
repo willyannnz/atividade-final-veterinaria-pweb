@@ -1,5 +1,8 @@
 <h1>Editar Veterinário</h1>
 <?php
+
+    include("config.php");
+    
     $sql = "SELECT * FROM veterinario WHERE id_veterinario=".$_REQUEST['id_veterinario'];
     $res = $conn->query($sql);
     $row = $res->fetch_object();

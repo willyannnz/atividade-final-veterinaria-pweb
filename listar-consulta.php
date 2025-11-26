@@ -1,7 +1,10 @@
+<?php
+    // --- CORREÇÃO: INCLUIR A CONEXÃO ---
+    include("config.php"); 
+?>
 <div class="container mt-4">
     <h1>Listagem de Consultas Agendadas</h1>
     <?php
-        // A query usa 3 INNER JOINs para buscar todos os nomes relacionados
         $sql = "SELECT 
                     c.id_consulta, 
                     c.data_hora, 
@@ -21,6 +24,12 @@
                 ORDER BY c.data_hora DESC";
 
         $res = $conn->query($sql);
+        
+        if ($res === FALSE) {
+             print "<p class='alert alert-danger'>ERRO: Falha ao executar a consulta em Consultas. Verifique as chaves estrangeiras. Detalhe: " . $conn->error . "</p>";
+             return; 
+        }
+
         $qtd = $res->num_rows;
 
         if($qtd > 0){
@@ -40,7 +49,6 @@
             print "<tbody>";
             
             while($row = $res->fetch_object()){
-                // Formata data e hora (Ex: 19/11/2025 10:30)
                 $data_hora_formatada = date('d/m/Y H:i', strtotime($row->data_hora));
 
                 print "<tr>";
