@@ -7,21 +7,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=BBH+Sans+Bogle&family=Bebas+Neue&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lobster&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
-    <title>Clinica Veterinária</title>
+    <title>Clínica Veterinária</title>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand banner-titulo" href="index.php"><i class="fa-solid fa-paw"></i> VitaPet</a>
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.php">
+                        🏠 Home
+                    </a>
+                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProprietarios" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Proprietários
@@ -74,10 +81,12 @@
         <div class="col-lg-12 mt-4">
 
             <?php
-                // Lógica de ROTEAMENTO (SWITCH) para incluir as páginas
+                // Inclui a conexão para o caso padrão (Dashboard) usar
+                include("config.php");
+
                 switch (@$_REQUEST["page"]) {
                     
-                    // --- ROTAS DE PROPRIETÁRIO ---
+                    // Proprietário
                     case "cadastrar-proprietario":
                         include("cadastrar-proprietario.php");
                         break;
@@ -87,11 +96,11 @@
                     case "editar-proprietario":
                         include("editar-proprietario.php");
                         break;
-                    case "salvar-proprietario": // Usa para Cadastrar/Editar/Excluir
+                    case "salvar-proprietario":
                         include("salvar-proprietario.php");
                         break;
                     
-                    // --- ROTAS DE VETERINÁRIO ---
+                    // Veterinário
                     case "cadastrar-veterinario":
                         include("cadastrar-veterinario.php");
                         break;
@@ -99,13 +108,15 @@
                         include("listar-veterinario.php");
                         break;
                     case "editar-veterinario":
-                        include("editar-veterinario.php");
+                        // ⚠️ ATENÇÃO: Renomeie o arquivo 'editar-funcionario.php' para 'editar-veterinario.php'
+                        // ou mude esta linha abaixo para include("editar-funcionario.php");
+                        include("editar-funcionario.php"); 
                         break;
                     case "salvar-veterinario":
                         include("salvar-veterinario.php");
-                        break;
+                        break; // 🟢 CORREÇÃO 2: Ponto e vírgula adicionado!
 
-                    // --- ROTAS DE RAÇA ---
+                    // Raça
                     case "cadastrar-raca":
                         include("cadastrar-raca.php");
                         break;
@@ -119,7 +130,7 @@
                         include("salvar-raca.php");
                         break;
 
-                    // --- ROTAS DE ANIMAL ---
+                    // Animal
                     case "cadastrar-animal":
                         include("cadastrar-animal.php");
                         break;
@@ -132,8 +143,8 @@
                     case "salvar-animal":
                         include("salvar-animal.php");
                         break;
-                        
-                    // --- ROTAS DE CONSULTA ---
+            
+                    // Consulta
                     case "cadastrar-consulta":
                         include("cadastrar-consulta.php");
                         break;
@@ -147,10 +158,50 @@
                         include("salvar-consulta.php");
                         break;
 
-                    // --- CASO PADRÃO (HOME) ---
+                    // 🟢 CORREÇÃO 3: Dashboard Completo no caso Default
                     default:
-                        print "<h1>Bem-vindo à Clínica Veterinária!</h1>";
-                        print "<p>Use o menu acima para começar a gerenciar proprietários, pacientes e consultas.</p>";
+                        // Busca as contagens para o Dashboard
+                        $count_proprietarios = $conn->query("SELECT COUNT(*) as count FROM proprietario")->fetch_object()->count;
+                        $count_animais       = $conn->query("SELECT COUNT(*) as count FROM animal")->fetch_object()->count;
+                        $count_consultas     = $conn->query("SELECT COUNT(*) as count FROM consulta")->fetch_object()->count;
+                        ?>
+                        
+                        <div class="jumbotron bg-light p-5 rounded shadow-sm">
+                            <h1 class="display-4">Bem-vindo à VitaPet!</h1>
+                            <p class="lead">Sistema de gerenciamento da Clínica Veterinária.</p>
+                            <hr class="my-4">
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card text-white bg-success mb-3 h-100">
+                                        <div class="card-header">Pacientes</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php print $count_animais; ?> Animais</h5>
+                                            <p class="card-text">Total de animais cadastrados.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card text-white bg-primary mb-3 h-100">
+                                        <div class="card-header">Proprietários</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php print $count_proprietarios; ?> Clientes</h5>
+                                            <p class="card-text">Total de proprietários ativos.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card text-white bg-warning mb-3 h-100">
+                                        <div class="card-header">Consultas</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php print $count_consultas; ?> Agendadas</h5>
+                                            <p class="card-text">Total de consultas no sistema.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
                         break;
                 }
             ?>
