@@ -1,7 +1,7 @@
 <?php
     include("config.php"); 
     
-    // 1. Preparar e Executar a consulta principal (Proprietário) de forma segura
+    
     if (!isset($_REQUEST["id_proprietario"])) {
         print "<p class='alert alert-danger'>ID do proprietário não fornecido para edição.</p>";
         return;

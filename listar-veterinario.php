@@ -1,5 +1,5 @@
 <?php
-    // --- CORREÇÃO: INCLUIR A CONEXÃO ---
+
     include("config.php"); 
 ?>
 <div class="container mt-4">

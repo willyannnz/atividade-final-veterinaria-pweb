@@ -1,7 +1,7 @@
 <?php
     define('HOST', 'localhost');
     define('USER', 'root');
-    define('PASS', ''); // Se tiver senha, coloque-a aqui dentro das aspas.
+    define('PASS', ''); 
     define('BASE', 'clinica_veterinaria');
 
     $conn = @new MySQLi(HOST, USER, PASS, BASE);

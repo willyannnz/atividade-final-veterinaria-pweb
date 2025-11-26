@@ -109,8 +109,7 @@
                     include("listar-veterinario.php");
                     break;
                 case 'editar-veterinario':
-                    // ASSUMINDO: editar-funcionario.php deve ser editar-veterinario.php
-                    include("editar-funcionario.php"); 
+                    include("editar-veterinario.php"); 
                     break;
 
                 // Animal
@@ -154,8 +153,10 @@
                 
                 // Página Inicial (default)
                 default:
+                
                     print "<h1>Bem-vindo ao Sistema da Clínica Veterinária - VitaPet!</h1>";
-                    print "<p>Utilize o menu superior para gerenciar Proprietários, Raças, Animais, Veterinários e Consultas.</p>";
+                    print "<p>Utilize o menu superior para gerenciar Proprietários, Raças, Animais, Veterinários e Consultas.</p>";         
+
                     break;
             }
         ?>
@@ -163,4 +164,4 @@
 
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html> 

@@ -1,5 +1,4 @@
 <?php
-    // --- PASSO 1: INCLUIR A CONEXÃO (ESSENCIAL) ---
     include("config.php"); 
 ?>
 <div class="container mt-4">

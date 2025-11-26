@@ -1,7 +1,6 @@
 <?php
     include("config.php"); 
     
-    // 1. Preparar e Executar a consulta principal (Consulta) de forma segura
     if (!isset($_REQUEST["id_consulta"])) {
         print "<p class='alert alert-danger'>ID da consulta não fornecido para edição.</p>";
         return;

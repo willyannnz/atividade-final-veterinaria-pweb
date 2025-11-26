@@ -1,6 +1,5 @@
 <?php
-    // --- PASSO 1: INCLUIR A CONEXÃO ---
-    // Esta linha é essencial para acessar a variável $conn
+
     include("config.php"); 
 ?>
 <div class="container mt-4">
@@ -10,11 +9,9 @@
 
         $res = $conn->query($sql);
 
-        // Verifica se houve um ERRO na consulta (o que acontece se $conn falhar)
         if ($res === FALSE) {
              // Exibe o erro de conexão/SQL. Isso é crucial para o debugging.
              print "<p class='alert alert-danger'>ERRO FATAL: Falha ao executar a consulta. Verifique se o config.php está no lugar certo e configurado para 'clinica_veterinaria'. Detalhe: " . $conn->error . "</p>";
-             // Para a execução do script
              return; 
         }
 
